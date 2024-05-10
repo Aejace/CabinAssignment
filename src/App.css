@@ -31,10 +31,6 @@
   color: #CCCCCC;
 }
 
-.Edit {
-  height: 20vmin;
-}
-
 .Assignment-field {
   background-color: gray;
   display: grid;
@@ -47,5 +43,41 @@
   opacity: 0.5;
 }
 
+.Edit {
+  height: 20vmin;
+  display: flex;
+  
+  align-items: center; /* Vertically center the components */
+  justify-content: space-around;
+}
 
+.form-container {
+  margin-bottom: 20px;
+}
 
+.label {
+  text-align: start;
+  margin-bottom: 5px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.input-container input {
+  margin-right: 10px;
+}
+
+button {
+  padding: 8px 16px;
+  background-color: #0089d0;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #003550;
+}

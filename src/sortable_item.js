@@ -6,20 +6,33 @@ export function Item(props) {
   const { id, removeItem } = props;
 
   const style = {
-    width: "100%",
-    height: 50,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    border: "1px solid black",
-    margin: "10px 0",
-    background: "white",
-    color: "black"
+    container: {
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between", // Adjusts the space between items
+      border: "1px solid black",
+      margin: "10px 0",
+      background: "white",
+      color: "black",
+      minWidth: "200px", // Set minimum width here
+      padding: "8px",
+    },
+    text: {
+      flex: 1, // Takes the remaining space
+    },
+    itemStyle: {
+      minWidth: "200px", // Set minimum width here
+      padding: "8px",
+      margin: "4px",
+      background: "#FFFFFF",
+      border: "1px solid #000000"
+    }
   };
 
   return (
-    <div>
-      <div style={style}>{id}</div>
+    <div style={style.container}>
+      <div style={style.text}>{id}</div>
       <button onClick={() => removeItem(id)}>X</button>
     </div>
   )

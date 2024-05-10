@@ -21,7 +21,10 @@ const containerStyle = {
     background: "#0060af",
     padding: 10,
     margin: 10,
-    flex: 1
+    flex: 1,
+    display: "flex", // Add flex display
+    flexDirection: "column", // Adjust the direction to column
+    alignItems: "center", // Center items horizontally
 };
 
 const buttonStyle = {

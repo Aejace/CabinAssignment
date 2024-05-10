@@ -22,7 +22,7 @@ const wrapperStyle = {
 
 export default function App() {
   const [items, setItems] = useState({
-    Campers: ["Ashe", "Brandi", "Catrina", "Daniel", "Elanor", "Fisher", "Gladys", "Howard", "Jasper", "Krystal"],
+    Campers: ["Ashe", "Brandi", "Catrina", "Daniel", "Elanor", "Fisher", "Gladys"],
     Maple: [],
     Oak: [],
     Pine: []
@@ -129,24 +129,30 @@ export default function App() {
         </p>
       </header>
       <body>
-        <div className="Edit">
-          <div>
-            <label>Add a cabin: </label>
-            <input
-            type="text"
-            value={newContainerID}
-            onChange={(e) => setNewContainerID(e.target.value)}
-            />
-            <button onClick={addContainer}>Submit</button>
+        <div class="Edit">
+          <div class="form-container">
+            <label for="cabin-input">Add a cabin:</label>
+            <div class="input-container">
+              <input
+                type="text"
+                id="cabin-input"
+                value={newContainerID}
+                onChange={(e) => setNewContainerID(e.target.value)}
+              />
+              <button onClick={addContainer}>Submit</button>
+            </div>
           </div>
-          <div>
-            <label>Add a camper: </label>
-            <input
-            type="text"
-            value={newItemID}
-            onChange={(e) => setNewItemID(e.target.value)}
-            />
-            <button onClick={addItemToRoot}>Submit</button>
+          <div class="form-container">
+            <label for="camper-input">Add a camper:</label>
+            <div class="input-container">
+              <input
+                type="text"
+                id="camper-input"
+                value={newItemID}
+                onChange={(e) => setNewItemID(e.target.value)}
+              />
+              <button onClick={addItemToRoot}>Submit</button>
+            </div>
           </div>
         </div>
         <div className='Assignment-field'>
