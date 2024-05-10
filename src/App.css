@@ -31,6 +31,21 @@
   color: #CCCCCC;
 }
 
+.Edit {
+  height: 20vmin;
+}
+
+.Assignment-field {
+  background-color: gray;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(33.33% - 25px), 1fr)); /* Divide into 3 columns */
+  gap: 25px; /* Adjust the gap between containers as needed */
+  padding: 25px;
+}
+
+.drag-overlay {
+  opacity: 0.5;
+}
 
 
 

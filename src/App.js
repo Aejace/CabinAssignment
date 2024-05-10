@@ -22,19 +22,103 @@ const wrapperStyle = {
 
 export default function App() {
   const [items, setItems] = useState({
-    root: ["1", "2", "3"],
-    container1: ["4", "5", "6"],
-    container2: ["7", "8", "9"],
-    container3: []
+    Campers: ["Ashe", "Brandi", "Catrina", "Daniel", "Elanor", "Fisher", "Gladys", "Howard", "Jasper", "Krystal"],
+    Maple: [],
+    Oak: [],
+    Pine: []
   });
   const [activeId, setActiveId] = useState();
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates
     })
   );
+
+  const [newContainerID, setNewContainerID] = useState('');
+  const [newItemID, setNewItemID] = useState('');
+
+  function addContainer() {
+    // Check if a container with the given ID already exists
+    if (items.hasOwnProperty(newContainerID)) {
+    console.log(`Container with ID "${newContainerID}" already exists.`);
+    return; // Exit the function early
+    }
+
+    setItems(prevItems => ({
+      ...prevItems,
+      [newContainerID]: []
+    }));
+    setNewContainerID('');
+  }
+
+  function removeContainer(containerID) {
+    // Check if a container with the given ID exists
+    if (!items.hasOwnProperty(containerID)) {
+      console.log(`Container with ID "${containerID}" does not exist.`);
+      return; // Exit the function early
+    }
+    if (containerID === "Campers") {
+      console.log(`Removing container with ID "${containerID}" is not allowed.`);
+      return; // Exit the function early
+    }
+  
+    // If the container exists, remove it from the state
+    setItems(prevItems => {
+      const { [containerID]: removedContainer, ...rest } = prevItems;
+      const campersItems = prevItems.Campers || []; // Get the current items in Campers, or an empty array if Campers doesn't exist
+      const newCampers = campersItems.concat(removedContainer); // Merge the removed container items with Campers items
+      return {
+        ...rest, // Keep all other containers
+        Campers: newCampers // Update Campers with the merged items
+      };
+    });
+  }
+
+  function addItemToRoot() {
+    for (const containerName in items) {
+      if (items.hasOwnProperty(containerName)) {
+        const container = items[containerName];
+        if (container.includes(newItemID)) {
+          // Handle duplicate item, you can show a message or take appropriate action
+          console.log(`Item already exists in ${containerName} array.`);
+          return items; // Return previous state without modification
+        }
+      }
+    }
+    
+    setItems(prevItems => {
+      // Clone the "root" container array and append the new item
+    const rootContainer = [...prevItems.Campers, newItemID];
+    setNewItemID('');
+    
+    // Update the state with the modified "root" container
+    return {
+      ...prevItems,
+      Campers: rootContainer
+    };
+  });
+}
+
+  function removeItem(itemID) {
+    console.log("Running removeItem");
+    // Iterate over each container in the items state
+    const updatedItems = Object.keys(items).reduce((acc, containerKey) => {
+      // Filter out the item from the current container
+      const updatedContainer = items[containerKey].filter(item => item !== itemID);
+      // Add the updated container to the accumulator
+      acc[containerKey] = updatedContainer;
+      return acc;
+    }, {});
+  
+    // Update the state with the containers that have the item removed
+    setItems(updatedItems);
+  }
 
   return (
     <div className="App" style={wrapperStyle}>
@@ -44,19 +128,44 @@ export default function App() {
           Cabin Assignments
         </p>
       </header>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
-      >
-        <Container id="root" items={items.root} />
-        <Container id="container1" items={items.container1} />
-        <Container id="container2" items={items.container2} />
-        <Container id="container3" items={items.container3} />
-        <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
-      </DndContext>
+      <body>
+        <div className="Edit">
+          <div>
+            <label>Add a cabin: </label>
+            <input
+            type="text"
+            value={newContainerID}
+            onChange={(e) => setNewContainerID(e.target.value)}
+            />
+            <button onClick={addContainer}>Submit</button>
+          </div>
+          <div>
+            <label>Add a camper: </label>
+            <input
+            type="text"
+            value={newItemID}
+            onChange={(e) => setNewItemID(e.target.value)}
+            />
+            <button onClick={addItemToRoot}>Submit</button>
+          </div>
+        </div>
+        <div className='Assignment-field'>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCorners}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragEnd={handleDragEnd}
+          >
+            {Object.keys(items).map(key => (
+            <div>
+              <Container key={key} id={key} items={items[key]} removeContainer={removeContainer} removeItem={removeItem}/>
+            </div>
+            ))}
+            <DragOverlay className='drag-overlay'>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
+          </DndContext>
+        </div>
+      </body>
     </div>
   );
 

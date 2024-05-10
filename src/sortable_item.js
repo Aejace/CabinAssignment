@@ -3,7 +3,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 export function Item(props) {
-  const { id } = props;
+  const { id, removeItem } = props;
 
   const style = {
     width: "100%",
@@ -13,10 +13,17 @@ export function Item(props) {
     justifyContent: "center",
     border: "1px solid black",
     margin: "10px 0",
-    background: "white"
+    background: "white",
+    color: "black"
   };
 
-  return <div style={style}>{id}</div>;
+  return (
+    <div>
+      <div style={style}>{id}</div>
+      <button onClick={() => removeItem(id)}>X</button>
+    </div>
+  )
+  
 }
 
 export default function SortableItem(props) {
@@ -28,6 +35,8 @@ export default function SortableItem(props) {
     transition
   } = useSortable({ id: props.id });
 
+  const {id, removeItem} = props;
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition
@@ -35,7 +44,7 @@ export default function SortableItem(props) {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Item id={props.id} />
+      <Item id={id} removeItem={removeItem}/>
     </div>
   );
 }
