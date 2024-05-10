@@ -2,6 +2,7 @@
   background-color: #f8f8f8;
   text-align: center;
   position: relative;
+  display: "flex";
 }
 
 .App-logo {
